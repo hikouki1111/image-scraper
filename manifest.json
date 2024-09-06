@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "name": "Image Scraper",
+  "version": "1.0",
+
+  "description": "Scrape images from website",
+
+  "applications": {
+    "gecko": {
+      "id": "image-scraper@hikouki1111.me"
+    }
+  },
+
+  "icons": {
+    "48": "./assets/48.png",
+    "96": "./assets/96.png"
+  },
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "contextMenus",
+    "downloads",
+    "alarms",
+    "cookies",
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/*"
+  ],
+
+  "browser_action": {
+    "default_icon": {
+        "19": "./assets/19.png",
+        "38": "./assets/38.png"
+    },
+    "default_title": "Scrape",
+    "default_popup": "./js/browseraction/popup.html"
+  },
+
+  "background": {
+    "scripts": ["./js/background/background.js"]
+  }
+}
