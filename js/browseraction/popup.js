@@ -1,4 +1,8 @@
+const selectedSet = new Set();
+
 function main() {
+    selectedSet.clear();
+
     const filterElement = document.getElementById("filter");
     let filter = "";
     filterElement.addEventListener("input", function() {
@@ -7,6 +11,16 @@ function main() {
     });
 
     update(filter);
+
+    document.getElementById("download-button").addEventListener("click", function() {
+        if (selectedSet.size != 0) {
+            selectedSet.forEach(src => {
+                browser.downloads.download({
+                    url: src
+                });
+            });
+        }
+    });
 }
 
 function update(filter) {
@@ -15,19 +29,37 @@ function update(filter) {
             const images = [...new Set(response.imageSrc)].filter(src => filter === "" || includesIgnoreCase(src, filter));
             const containerElement = document.getElementById("image-container");
             containerElement.innerHTML = "";
-
             const counterElement = document.getElementById("counter");
             counterElement.innerHTML = String(images.length).concat(" images");
+            
+            for (let i = 0; i < images.length; i++) {
+                const index = String(i);
+                const itemElement = document.createElement("div");
+                itemElement.style.display = "flex";
 
-            images.forEach((src) => {
+                const checkBoxElement = document.createElement("input");
+                checkBoxElement.type = "checkbox";
+                checkBoxElement.id = images[i];
+                checkBoxElement.classList.add("checkbox");
+                itemElement.appendChild(checkBoxElement);
+
                 const imgElement = document.createElement("img");
-                imgElement.id = "appendedImg";
-                imgElement.src = src;
-                imgElement.style.width = "50%";
-                imgElement.style.height = "auto";
-                imgElement.style.filter = "drop-shadow(0px 0px 10px #4c5958";
-                imgElement.style.marginBottom = "15px";
-                containerElement.appendChild(imgElement);
+                imgElement.id = "img".concat(index);
+                imgElement.src = images[i];
+                itemElement.appendChild(imgElement);
+
+                containerElement.appendChild(itemElement);
+            }
+
+            const checkBoxElement = document.getElementsByClassName("checkbox");
+            Array.from(checkBoxElement).forEach(element => {
+                element.addEventListener("change", function() {
+                    if (element.checked) {
+                        selectedSet.add(element.id);
+                    } else {
+                        selectedSet.delete(element.id);
+                    }
+                });
             });
         }
     }).catch((error) => {

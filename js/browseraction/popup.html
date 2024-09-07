@@ -8,10 +8,13 @@
 </head>
 <body>
     <div class="settings-container">
-        <textarea id="filter" placeholder="Filter" style="margin-top: 10px;"></textarea>
+        <div style="margin-top: 10px;"></div>
+        <textarea id="filter" placeholder="Filter"></textarea>
         <p id="counter"></p>
+        <button id="download-button">Download Selected</button>
+        <div style="margin-bottom: 10px;"></div>
     </div>
-    <div id="image-container"></div>
+    <div id="image-container" class="flexbox"></div>
     <script src="./popup.js"></script>
 </body>
 </html>
