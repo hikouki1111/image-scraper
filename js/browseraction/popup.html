@@ -9,11 +9,17 @@
 <body>
     <div class="settings-container">
         <div style="margin-top: 10px;"></div>
-        <textarea id="filter" placeholder="Filter"></textarea>
-        <p id="counter"></p>
-        <button id="download-button">Download Selected</button>
+        <textarea id="filter" placeholder="Filter" class="container-item" style="margin-right: 10px; margin-top: 10px;"></textarea>
+        <p id="counter" class="container-item"></p>
+        <button id="download-button" class="container-item">Download Selected</button>
         <div style="margin-bottom: 10px;"></div>
     </div>
+
+    <div class="control-container">
+        <input type="checkbox" id="global-checkbox" class="container-item"/>
+        <label for="global-checkbox" class="container-item">All</label>
+    </div>
+
     <div id="image-container" class="flexbox"></div>
     <script src="./popup.js"></script>
 </body>
