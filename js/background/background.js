@@ -12,9 +12,25 @@ function main() {
                     console.error(error);
                 });
             });
-            
-            return true;
+        } else if (message.action === "getIsAsZip") {
+            browser.storage.local.get("asZip").then(value => {
+                sendResponse({ action: "sendIsAsZip", asZip: value });
+            }).catch((error) => {
+                console.error(error);
+            });
+        } else if (message.action === "setIsAsZip") {
+            const asZip = {
+                asZip: message.value
+            };
+
+            browser.storage.local.set(asZip).then(() => {
+                sendResponse({ action: "response" });
+            }).catch((error) => {
+                    console.error(error);
+            });
         }
+
+        return true;
     });
 }
 

@@ -11,15 +11,26 @@ function main() {
         filter = filterElement.value;
         update(filter);
     });
-
     update(filter);
+
+    const asZipElement = document.getElementById("as-zip");
+    browser.runtime.sendMessage({ action: "getIsAsZip" }).then((response) => {
+        asZipElement.checked = response.asZip.asZip;
+    });
+
+    asZipElement.addEventListener("change", () => {
+        browser.runtime.sendMessage({ action: "setIsAsZip", value: asZipElement.checked })
+            .catch(error => {
+                console.error(error);
+            });
+    });
 
     document.getElementById("download-button").addEventListener("click", () => {
         if (selectedSet.size != 0) {
             zipFiles()
                 .then(() => zip.generateAsync({type: "blob"}))
                 .then(content => {
-                    if (document.getElementById("as-zip").checked) {
+                    if (asZipElement.checked) {
                         const zipUrl = URL.createObjectURL(content);
                         browser.downloads.download({
                             url: zipUrl,
