@@ -5,14 +5,8 @@
     max-height: 100%;
 }
 
-.settings-container {
-    background-color: #127369;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.control-container {
-    background-color: #127369;
+.container {
+    background: linear-gradient(#127369, #158479);
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -23,7 +17,7 @@
 }
 
 body {
-    background-color: #c6c6c6;
+    background: linear-gradient(#10403b, #18625b);
     color: #bfbfbf;
     font-family: "Nunito", sans-serif;
     font-size: calc(10px + 2vmin);
@@ -53,7 +47,7 @@ button {
 }
 
 img {
-    filter: drop-shadow(0px 0px 10px #4c5958);
+    filter: drop-shadow(0px 0px 10px #bfbfbf);
     margin-bottom: 15px;
     align-items: center;
     justify-content: center;
