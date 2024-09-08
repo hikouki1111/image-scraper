@@ -17,7 +17,7 @@
 }
 
 body {
-    background: linear-gradient(#10403b, #18625b);
+    background: linear-gradient(#18625b, #10403b);
     color: #bfbfbf;
     font-family: "Nunito", sans-serif;
     font-size: calc(10px + 2vmin);
