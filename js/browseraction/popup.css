@@ -61,8 +61,5 @@ img {
 }
 
 .settings-label {
-    white-space: nowrap;
-    margin-right: 10px;
-    margin-left: -5px;
     text-align: center;
 }
