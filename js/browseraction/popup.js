@@ -1,33 +1,43 @@
 const selectedSet = new Set();
+let zip = new JSZip();
 
 function main() {
     selectedSet.clear();
+    zip = new JSZip()
 
     const filterElement = document.getElementById("filter");
     let filter = "";
-    filterElement.addEventListener("input", function() {
+    filterElement.addEventListener("input", () => {
         filter = filterElement.value;
         update(filter);
     });
 
     update(filter);
 
-    document.getElementById("download-button").addEventListener("click", function() {
+    document.getElementById("download-button").addEventListener("click", () => {
         if (selectedSet.size != 0) {
-            selectedSet.forEach(src => {
-                browser.downloads.download({
-                    url: src,
-                    filename: getFileName(src)
+            zipFiles()
+                .then(() => zip.generateAsync({type: "blob"}))
+                .then(content => {
+                    if (document.getElementById("as-zip").checked) {
+                        const zipUrl = URL.createObjectURL(content);
+                        browser.downloads.download({
+                            url: zipUrl,
+                            filename: "images.zip"
+                        })
+                    } else {
+                        downloadAsync();
+                    }
                 });
-            });
         }
     });
 
     const globalCheckbox = document.getElementById("global-checkbox");
-    globalCheckbox.addEventListener("change", function() {
+    globalCheckbox.addEventListener("change", () => {
         const allCheckboxElement = document.getElementsByClassName("checkbox");
         Array.from(allCheckboxElement).forEach((element) => {
             element.checked = globalCheckbox.checked;
+            element.dispatchEvent(new Event('change'));
         });
     });
 }
@@ -63,7 +73,7 @@ function update(filter) {
 
             const checkBoxElement = document.getElementsByClassName("checkbox");
             Array.from(checkBoxElement).forEach(element => {
-                element.addEventListener("change", function() {
+                element.addEventListener("change", () => {
                     if (element.checked) {
                         selectedSet.add(element.id);
                     } else {
@@ -84,6 +94,65 @@ function includesIgnoreCase(string1, string2) {
 function getFileName(url) {
     const pathname = new URL(url).pathname;
     return pathname.substring(pathname.lastIndexOf('/') + 1);
+}
+
+function fixExt(blob, filename) {
+    return extensionMap[blob.type] || filename;
+}
+
+function getImageAsBlob(url) {
+    return fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            return blob;
+        });
+}
+
+const extensionMap = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+    "image/svg+xml": ".svg",
+    "image/bmp": ".bmp",
+    "image/tiff": ".tiff",
+    "image/x-icon": ".ico",
+    "image/heif": ".heif",
+    "image/heic": ".heic",
+    "image/avif": ".avif",
+    "image/jp2": ".jp2"
+};
+
+async function zipFiles() {
+    const promise = Array.from(selectedSet).map(async (src) => {
+        try {
+            const blob = await getImageAsBlob(src);
+            const filename = randomString(10) + fixExt(blob, getFileName(src));
+            zip.file(filename, blob);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    const results = await Promise.all(promise);
+    return results;
+}
+
+async function downloadAsync() {
+    const promise = Array.from(selectedSet).map(async (src) => {
+        try {
+            const blob = await getImageAsBlob(src);
+            const filename = randomString(10) + fixExt(blob, getFileName(src));
+            browser.downloads.download({
+                url: src,
+                filename: filename
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    await Promise.all(promise);
 }
 
 main();

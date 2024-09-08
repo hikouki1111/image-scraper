@@ -25,10 +25,12 @@
 body {
     background-color: #c6c6c6;
     color: #bfbfbf;
+    font-family: "Nunito", sans-serif;
     font-size: calc(10px + 2vmin);
 }
 
 textarea {
+    font-family: "Nunito", sans-serif;
     resize: none;
     border: none;
     outline: none;
@@ -38,10 +40,12 @@ textarea {
 }
 
 textarea::placeholder {
+    font-family: "Nunito", sans-serif;
     color: #127369;
 }
 
 button {
+    font-family: "Nunito", sans-serif;
     background-color: #c6c6c6;
     color: #127369;
     border-radius: 5px;
