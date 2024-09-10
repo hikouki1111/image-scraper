@@ -8,7 +8,7 @@ function randomString(length) {
     let string = "";
 
     for (let i = 0; i < length; i++) {
-        string+=characters[randomInt(0, characters.length)];
+        string+=characters[randomInt(0, characters.length - 1)];
     }
 
     return string;
