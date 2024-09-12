@@ -134,7 +134,7 @@ const extensionMap = {
     "image/jp2": ".jp2"
 };
 
-async function zipFiles() {
+function zipFiles() {
     const promise = Array.from(selectedSet).map(async (src) => {
         try {
             const blob = await getImageAsBlob(src);
@@ -145,11 +145,10 @@ async function zipFiles() {
         }
     });
 
-    const results = await Promise.all(promise);
-    return results;
+    return Promise.all(promise);
 }
 
-async function downloadAsync() {
+function downloadAsync() {
     const promise = Array.from(selectedSet).map(async (src) => {
         try {
             const blob = await getImageAsBlob(src);
@@ -163,7 +162,7 @@ async function downloadAsync() {
         }
     });
 
-    await Promise.all(promise);
+    return Promise.all(promise);
 }
 
 main();
